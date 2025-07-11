@@ -1,0 +1,93 @@
+Algoritmo FuerzaBrutaLadron
+    Definir casas, combinaciones Como Entero
+    Definir n, maxBotin, mejorCombinacion Como Entero
+    Definir i, j, k Como Entero
+    
+    Dimension casas[5]
+    casas[1] <- -1
+    casas[2] <- 0
+    casas[3] <- 43
+    casas[4] <- 0
+    casas[5] <- -1
+    n <- 5
+    
+    Escribir "=== PRIMER CASO ==="
+    ResolverLadron(casas, n)
+    
+    Dimension casas2[6]
+    casas2[1] <- 0
+    casas2[2] <- 10
+    casas2[3] <- 6
+    casas2[4] <- 20
+    casas2[5] <- 15
+    casas2[6] <- -1
+    n <- 6
+    
+    Escribir ""
+    Escribir "=== SEGUNDO CASO ==="
+    ResolverLadron(casas2, n)
+    
+FinAlgoritmo
+
+SubProceso ResolverLadron(casas Por Referencia, n)
+    Definir maxBotin, botin Como Entero
+    Definir mejorCombinacion Como Entero
+    Definir totalCombinaciones Como Entero
+    Definir i, j, k Como Entero
+    Definir esValida Como Logico
+    
+    maxBotin <- 0
+    totalCombinaciones <- 2^n 
+    Dimension mejorCombinacion[n]
+    //
+    Para i <- 1 Hasta n Hacer
+        mejorCombinacion[i] <- 0
+    FinPara
+    
+    Escribir "Casas con sus respectivos botines:"
+    Para i <- 1 Hasta n Hacer
+        Escribir Sin Saltar "[", casas[i], "] "
+    FinPara
+    Escribir ""
+    
+    Para i <- 1 Hasta totalCombinaciones-1 Hacer
+        esValida <- Verdadero
+        botin <- 0
+        
+        j <- 1
+        Mientras j <= n-1 Y esValida Hacer
+            Si ((i MOD (2^j)) >= 2^(j-1)) Y ((i MOD (2^(j+1))) >= 2^j) Entonces
+                esValida <- Falso
+            FinSi
+            j <- j + 1
+        FinMientras
+     //   
+        Si esValida Entonces
+            Para j <- 1 Hasta n Hacer
+                Si (i MOD (2^j)) >= 2^(j-1) Entonces
+                    botin <- botin + casas[j]
+                FinSi
+            FinPara
+            
+            Si botin > maxBotin Entonces
+                maxBotin <- botin
+                Para j <- 1 Hasta n Hacer
+                    Si (i MOD (2^j)) >= 2^(j-1) Entonces
+                        mejorCombinacion[j] <- 1
+                    SiNo
+                        mejorCombinacion[j] <- 0
+                    FinSi
+                FinPara
+            FinSi
+        FinSi
+    FinPara
+    
+    Escribir "Botin maximo: ", maxBotin
+    Escribir "Casas seleccionadas:"
+    Para i <- 1 Hasta n Hacer
+        Si mejorCombinacion[i] = 1 Entonces
+            Escribir "Indice: ", i-1, " - Botin: ", casas[i]
+        FinSi
+    FinPara
+    
+FinSubProceso
